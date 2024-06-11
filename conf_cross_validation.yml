@@ -1,0 +1,20 @@
+language-model-name: "gpt2-xl" #"microsoft/phi-2"
+ignore-first-sentence: true
+
+number-of-interpolation-points: 43
+min-tokens-per-sentence: 10
+max-tokens-per-sentence: 50
+hc-type: "stbl"
+parser: "spacy"
+
+k-folds: 10
+edit-ratio: 0.2
+
+#no-context-null-data-file: "/home/treuser1/Idan-detectLM/SecondDataset/Combined/100_sentences/20/model_name_combined_null_sentences_phi2.csv" 
+
+input-file: "D:/.Idan/תואר שני/תזה/SecondDataset/Cross_validation/NewsDataset/50_sentences/model_name_news_articles_null.csv"
+# input-file-test: "/home/treuser1/Idan-detectLM/SecondDataset/Cross_validation/AbstractDataset/50_sentences/0.1/war_articles_test.csv"
+output-path: "D:/.Idan/תואר שני/תזה/SecondDataset/Cross_validation/NewsDataset/50_sentences/0.2"
+
+sentences-logloss: "D:/.Idan/תואר שני/תזה/SecondDataset/model_gpt2xl_sentences_logloss.json"
+null-output: ""
