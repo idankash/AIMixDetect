@@ -5,6 +5,7 @@ from tqdm import tqdm
 import logging
 import json
 import re
+GAMMA = 0.45
 
 
 def truncae_to_max_no_tokens(text, max_no_tokens):
@@ -13,7 +14,7 @@ def truncae_to_max_no_tokens(text, max_no_tokens):
 
 class DetectLM(object):
     def __init__(self, sentence_detection_function, survival_function_per_length,
-                 min_len=4, max_len=100, HC_type="stbl",
+                 min_len=1, max_len=100, HC_type="stbl", gamma=GAMMA,
                  length_limit_policy='truncate', ignore_first_sentence=False, cache_logloss_path=''):
         """
         Test for the presence of sentences of irregular origin as reflected by the
@@ -33,7 +34,9 @@ class DetectLM(object):
                 'ignore':  do not evaluate the response and P-value for this sentence
                 'max_available':  use the logloss function of the maximal available length
             :ignore_first_sentence:  whether to ignore the first sentence in the document or not. Useful when assuming
-                context of the form previous sentence.
+            that the first sentence is a title or a header or a context of the form previous sentence.
+            :HC_type:  'stbl' True for the 2008 HC version, otherwise uses the 2004 version.
+            :gamma:  the gamma parameter of the HC test.
             :cache_logloss_path: cache dict to restore the logloss faster
         """
 
@@ -44,7 +47,8 @@ class DetectLM(object):
         self.length_limit_policy = length_limit_policy
         self.ignore_first_sentence = ignore_first_sentence
         self.HC_stbl = True if HC_type == 'stbl' else False
-        
+        self.gamma = gamma
+
         # Idan 26/05/204
         self.cache_logloss_path = cache_logloss_path
         try:
@@ -87,7 +91,11 @@ class DetectLM(object):
                     comment = "exceeding length limit; resorting to max-available length"
                     length = self.max_len
             pval = self.survival_function_per_length(length, response)
-            assert pval >= 0, "Negative P-value. Something is wrong."
+            try:
+                assert pval >= 0, "Negative P-value. Something is wrong."
+            except:
+                import pdb; pdb.set_trace()
+
             return dict(response=response, 
                         pvalue=pval, 
                         length=length,
@@ -100,14 +108,20 @@ class DetectLM(object):
                         comment=comment)
 
     def _get_pvals(self, responses: list, lengths: list) -> tuple:
+        """
+        Pvalues from responses and lengths
+        """
         pvals = []
         comments = []
         for response, length in zip(responses, lengths):
-            r = self._test_response(response, length)
+            if not np.isnan(response):
+                r = self._test_response(response, length)
+            else:
+                r = dict(response=response, pvalue=np.nan, length=length, comment="ignored (no response)")
             pvals.append(float(r['pvalue']))
             comments.append(r['comment'])
         return pvals, comments
-    
+
     def clean_string(self, s):
         # Remove escape characters
         s = re.sub(r'\\[nrt]', '', s)
@@ -121,10 +135,10 @@ class DetectLM(object):
         if self.cache_logloss is None: return None
         if sent not in self.cache_logloss: return None
         return self.cache_logloss[sent]
-
+    
     def _get_responses(self, sentences: list, contexts: list) -> list:
         """
-        Compute response and length of a text sentence 
+        Compute response and length of a every sentence in a list
         """
         assert len(sentences) == len(contexts)
 
@@ -135,10 +149,10 @@ class DetectLM(object):
             length = self._get_length(sent)
             if self.length_limit_policy == 'truncate':
                 sent = truncae_to_max_no_tokens(sent, self.max_len)
-            if length == 1:
-                logging.warning(f"Sentence {sent} is too short. Skipping.")
-                responses.append(np.nan)
-                continue
+            # if length == 1:
+            #     logging.warning(f"Sentence {sent} is too short. Skipping.")
+            #     responses.append(np.nan)
+            #     continue
             try:
                 # Try getting logloss from cache
                 sentence_response = self._get_logloss_cache(self.clean_string(sent))
@@ -148,10 +162,9 @@ class DetectLM(object):
                     current_response = self._test_sentence(sent, ctx)
                     responses.append(current_response)
             except:
-                # something unusual happened...
+                # something unusual has happened...
                 import pdb; pdb.set_trace()
             lengths.append(length)
-            
         return responses, lengths
 
     def get_pvals(self, sentences: list, contexts: list) -> tuple:
@@ -162,22 +175,9 @@ class DetectLM(object):
 
         responses, lengths = self._get_responses(sentences, contexts)
         pvals, comments = self._get_pvals(responses, lengths)
-        
         return pvals, responses, comments
 
-
-    def testHC(self, sentences: list) -> float:
-        pvals = np.array(self.get_pvals(sentences)[1])
-        mt = MultiTest(pvals, stbl=self.HC_stbl)
-        return mt.hc(gamma=0.4)[0]
-
-    def testFisher(self, sentences: list) -> dict:
-        pvals = np.array(self.get_pvals(sentences)[1])
-        print(pvals)
-        mt = MultiTest(pvals, stbl=self.HC_stbl)
-        return dict(zip(['Fn', 'pvalue'], mt.fisher()))
-
-    def _test_chunked_doc(self, lo_chunks: list, lo_contexts: list) -> tuple:
+    def _test_chunked_doc(self, lo_chunks: list, lo_contexts: list) -> (MultiTest, pd.DataFrame):
         pvals, responses, comments = self.get_pvals(lo_chunks, lo_contexts)
         if self.ignore_first_sentence:
             pvals[0] = np.nan
@@ -198,19 +198,48 @@ class DetectLM(object):
         if mt is None:
             hc = np.nan
             fisher = (np.nan, np.nan)
-            berk_jones = (np.nan, np.nan)
             df['mask'] = pd.NA
         else:
-            hc, hct = mt.hc(gamma=0.4)
+            hc, hct = mt.hc(gamma=self.gamma)
             fisher = mt.fisher()
-            berk_jones = mt.berk_jones()
-            print("berk_jones")
-            print(berk_jones)
             df['mask'] = df['pvalue'] <= hct
         if dashboard:
-            mt.hc_dashboard(gamma=0.4)
-        return dict(sentences=df, HC=hc, fisher=fisher[0], fisher_pvalue=fisher[1]
-                    , berk_jones=berk_jones)
+            mt.hc_dashboard(gamma=self.gamma)
+        
+        dc = dict(sentences=df, HC=hc, fisher=fisher[0], fisher_pvalue=fisher[1], minP=mt.minp(), bonf=mt.bonfferoni())
+        return dc
+    
+    def from_responses(self, responses: list, lengths: list, dashboard=False) -> dict:
+        """
+        Compute P-values from responses and lengths
+        """
 
+        pvals, comments = self._get_pvals(responses, lengths)
+        if self.ignore_first_sentence:
+            pvals[0] = np.nan
+            logging.info('Ignoring the first sentence.')
+            comments[0] = "ignored (first sentence)"
+        
+        df = pd.DataFrame({'response': responses, 'pvalue': pvals, 'comment': comments},
+                          index=range(len(responses)))
+        df_test = df[~df.pvalue.isna()]
+        if df_test.empty:
+            logging.warning('No valid chunks to test.')
+            return None, df
+        mt = MultiTest(df_test.pvalue, stbl=self.HC_stbl)
+        
+        if mt is None:
+            hc = np.nan
+            fisher = (np.nan, np.nan)
+            df['mask'] = pd.NA
+        else:
+            hc, hct = mt.hc(gamma=self.gamma)
+            fisher = mt.fisher()
+            bonferroni = mt.bonfferoni()
+            df['mask'] = df['pvalue'] <= hct
+        if dashboard:
+            mt.hc_dashboard(gamma=self.gamma)
+        return dict(sentences=df, HC=hc, fisher=fisher[0], fisher_pvalue=fisher[1], bonf=bonferroni)
+    
     def __call__(self, lo_chunks: list, lo_contexts: list, dashboard=False) -> dict:
         return self.test_chunked_doc(lo_chunks, lo_contexts, dashboard=dashboard)

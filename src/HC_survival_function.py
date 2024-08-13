@@ -11,35 +11,52 @@ import pandas as pd
 from multitest import MultiTest
 from tqdm import tqdm
 from scipy.interpolate import RectBivariateSpline
-from src.fit_survival_function import fit_survival_func
-import logging
 
-HC_NULL_SIM_FILE = "HC_null_sim_results.csv"
-STBL = True
+import logging
+import hashlib
+import os
+import sys
+sys.path.append('../')
+from src.fit_survival_function import fit_survival_func
+
 NN = [25, 50, 75, 100, 125, 150, 200, 250, 300, 400, 500]  # values of n to simulate
 
-def get_HC_survival_function(HC_null_sim_file, log_space=True, nMonte=10000, STBL=True):
+def get_HC_survival_function(gamma, stbl,
+                             HC_null_sim_file_prefix="HC_null_sim_results",
+                              log_space=True, nMonte=10000,
+                               nn=NN):
 
+    # find hash of parameters:
+    
+    m = hashlib.md5()
+    m.update((str(nMonte) + str(stbl) + str(gamma) + str(NN)).encode('utf-8'))
+    hash = m.hexdigest()[:10]
+    HC_null_sim_file = HC_null_sim_file_prefix + '_' + hash + ".csv"
+    
     xx = {}
-    if HC_null_sim_file is None:            
-            logging.info("Simulated HC null values file was not provided.")
-            for n in tqdm(NN):
-                logging.info(f"Simulating HC null values for n={n}...")
-                yy = np.zeros(nMonte)
-                for j in range(nMonte):
-                    uu = np.random.rand(n)
-                    mt = MultiTest(uu, stbl=STBL)
-                    yy[j] = mt.hc()[0]
-                xx[n] = yy
-            nn = NN # Idan
-    else:
+    # check if file exists:
+    if os.path.isfile(HC_null_sim_file):
         logging.info(f"Loading HC null values from {HC_null_sim_file}...")
         df = pd.read_csv(HC_null_sim_file, index_col=0)
         for n in df.index:
             xx[n] = df.loc[n]
-        nn = df.index.tolist()
+    else:
+        logging.info("Simulated HC null values file was not found.")
+        for n in tqdm(NN):
+            logging.info(f"Simulating HC null values for n={n}...")
+            yy = np.zeros(nMonte)
+            for j in range(nMonte):
+                uu = np.random.rand(n)
+                mt = MultiTest(uu, stbl=stbl)
+                yy[j] = mt.hc(gamma=gamma)[0]
+            xx[n] = yy
+        # save to file:
+        df = pd.DataFrame(xx)
+        df.index.name = "n"
+        df.to_csv(HC_null_sim_file)
+        logging.info(f"HC null values were saved to {HC_null_sim_file}.")
 
-    xx0 = np.linspace(-1, 10, 57)
+    xx0 = np.linspace(-1, 8, 57)
     zz = []
     for n in nn:
         univariate_survival_func = fit_survival_func(xx[n], log_space=log_space)
@@ -56,7 +73,7 @@ def get_HC_survival_function(HC_null_sim_file, log_space=True, nMonte=10000, STB
     
 
 def main():
-    func = get_HC_survival_function(HC_null_sim_file=HC_NULL_SIM_FILE, STBL=STBL)
+    func = get_HC_survival_function(HC_null_sim_file_prefix=HC_NULL_SIM_FILE, stbl=STBL)
     print("Pr[HC >= 3 |n=50] = ", func(50, 3)[0][0]) # 9.680113e-05
     print("Pr[HC >= 3 |n=100] = ", func(100, 3)[0][0]) # 0.0002335
     print("Pr[HC >= 3 |n=200] = ", func(200, 3)[0][0]) # 0.00103771
