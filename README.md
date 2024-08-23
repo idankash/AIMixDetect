@@ -18,12 +18,12 @@ The analysis conducted in the paper is based on the construction of specific ana
 
 ### Statement about Rights
 
-- [V] I certify that the author(s) of the manuscript have legitimate access to and permission to use the data used in this manuscript. 
-- [V] I certify that the author(s) of the manuscript have documented permission to redistribute/publish the data contained within this replication package. Appropriate permission are documented in the [LICENSE.txt](LICENSE.txt) file.
+- [x] I certify that the author(s) of the manuscript have legitimate access to and permission to use the data used in this manuscript. 
+- [x] I certify that the author(s) of the manuscript have documented permission to redistribute/publish the data contained within this replication package. Appropriate permission are documented in the [LICENSE.txt](LICENSE.txt) file.
 
 ### Summary of Availability
 
-- [V] All data **are** publicly available.
+- [x] All data **are** publicly available.
 - [ ] Some data **cannot be made** publicly available.
 - [ ] **No data can be made** publicly available.
 
@@ -43,7 +43,7 @@ The data used to support the findings of this study have been deposited in the c
 
 ### Software Requirements
 
-- [V] The replication package contains one or more programs to install all dependencies and set up the necessary directory structure.
+- [x] The replication package contains one or more programs to install all dependencies and set up the necessary directory structure.
 
 - Python 3.10.11
   - `pandas` 2.0.0
@@ -61,7 +61,7 @@ The data used to support the findings of this study have been deposited in the c
 
 ### Controlled Randomness
 
-- [V] Random seed is set at line 48 of program `simulate_replication_LoR.py`
+- [x] Random seed is set at line 48 of program `simulate_replication_LoR.py`
 - [ ] No Pseudo random generator is used in the analysis described here.
 
 ### Memory, Runtime, Storage Requirements
@@ -69,7 +69,7 @@ The data used to support the findings of this study have been deposited in the c
 Approximate time needed to reproduce the analyses on a standard 2024 desktop machine:
 
 - [ ] <10 minutes
-- [V] 10-60 minutes
+- [x] 10-60 minutes
 - [ ] 1-2 hours
 - [ ] 2-8 hours
 - [ ] 8-24 hours
@@ -79,7 +79,7 @@ Approximate time needed to reproduce the analyses on a standard 2024 desktop mac
 
 Approximate storage space needed:
 
-- [V] < 25 MBytes
+- [x] < 25 MBytes
 - [ ] 25 MB - 250 MB
 - [ ] 250 MB - 2 GB
 - [ ] 2 GB - 25 GB
@@ -118,7 +118,7 @@ The provided code reproduces:
 
 - [ ] All numbers provided in text in the paper
 - [ ] All tables and figures in the paper
-- [V] Selected tables and figures in the paper, as explained and justified below.
+- [x] Selected tables and figures in the paper, as explained and justified below.
 
 | Figure/Table #    | Program                     | Line Number | Output file     |
 |-------------------|-----------------------------|-------------|-----------------|
