@@ -45,7 +45,7 @@ The data used to support the findings of this study have been deposited in the c
 
 - [V] The replication package contains one or more programs to install all dependencies and set up the necessary directory structure.
 
-- Python 3.6.4
+- Python 3.10.11
   - `pandas` 2.0.0
   - `numpy` 1.24.1
   - `tqdm` 4.65.0
