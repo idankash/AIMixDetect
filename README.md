@@ -4,7 +4,7 @@
 contributors:
   - Alon Kipnis
   - Idan Kashtan
-  ---
+---
 
 ## Overview
 
