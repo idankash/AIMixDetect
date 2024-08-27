@@ -40,7 +40,7 @@ The analysis conducted in the paper is based on the construction of specific ana
 | ”isarth/chatgpt-news-articles” | HuggingFace | HuggingFace | FALSE ||
 | ”NicolaiSivesind/ChatGPT-Research-Abstracts” | HuggingFace | HuggingFace | FALSE |@misc {sivesind_2023,author= { {Nicolai Thorer Sivesind}},title= { ChatGPT-Generated-Abstracts },year=2023,publisher= { Hugging Face }}|
 
-The data used to support the findings of this study have been deposited in the current repository. The data were created by the authors and are available under a Creative Commons Non-commercial license. For each data source, we provide three types of edit ratios: 0.05, 0.1, and 0.15. You can find a parser and an explanation of how to read the data yourself in `data/articles/parse_article.py`. Additionally, we used three publicly available Huggingface to conduct our power analysis.
+The data used to support the findings of this study have been deposited in the current repository. The data were created by the authors and are available under a Creative Commons Non-commercial license. For each data source, we provide three types of edit ratios: 0.05, 0.1, and 0.15. You can find a parser and an explanation of how to read the data yourself in `data/articles/parse_article.py`. Additionally, we used three publicly available Huggingface datasets to conduct our power analysis.
 
 ## Computational requirements
 
