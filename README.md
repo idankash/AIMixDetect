@@ -10,7 +10,7 @@ contributors:
 
 This replication package is designed to guide you through the process of replicating the results presented in our paper. The data used in this research was generated using GPT-3.5-turbo (ChatGPT) and is organized into five distinct datasets, which are located in the `dataset` folder. To facilitate the reading and parsing of these datasets, a script named `parse_article.py` is provided.
 
-The analysis conducted in the paper is based on the construction of specific analysis files for three statistical methods: HC, minP, and LoR. The code included in this package allows you to replicate these analyses. Specifically, two main scripts—`simulate_replication_HC.py` and `simulate_replication_LoR.py`—are used to run the core analyses discussed in the paper.
+The analysis conducted in the paper is based on the construction of specific analysis files for three statistical methods: HC, minP, and LoR. The code included in this package allows you to replicate these analyses. Specifically, three main scripts—`simulate_replication_HC.py`, `simulate_replication_LoR.py`, and `simulate_replication_HC_power_analysis.py`—are used to run the core analyses discussed in the paper.
 
 ## Data Availability and Provenance Statements
 
@@ -31,13 +31,16 @@ The analysis conducted in the paper is based on the construction of specific ana
 
 | Data.Name  | Data.Files | Location | Provided | Citation |
 | -- | -- | -- | -- | -- | 
-| “Geographical landmarks articles” | geographical_landmarks_articles.csv | data/articles | TRUE | ??? |
-| “Historical figures articles” | historical_figures_articles.csv | data/articles | TRUE | ??? |
-| “Nature articles” | nature_articles.csv | data/articles | TRUE | ??? |
-| “Video games articles” | video_games_articles.csv | data/articles | TRUE | ??? |
-| “Wars articles” | wars_articles.csv | data/articles | TRUE | ??? |
+| “Geographical landmarks articles” | geographical_landmarks_articles.csv | data/articles | TRUE |  |
+| “Historical figures articles” | historical_figures_articles.csv | data/articles | TRUE |  |
+| “Nature articles” | nature_articles.csv | data/articles | TRUE |  |
+| “Video games articles” | video_games_articles.csv | data/articles | TRUE |  |
+| “Wars articles” | wars_articles.csv | data/articles | TRUE |  |
+| ”aadityaubhat/GPT-wiki-intro” | HuggingFace | HuggingFace | FALSE | @misc {aaditya_bhat_2023,author= { {Aaditya Bhat} },title= { GPT-wiki-intro (Revision 0e458f5) },year= 2023,url= { https://huggingface.co/datasets/aadityaubhat/GPT-wiki-intro },doi= { 10.57967/hf/0326 },publisher= { Hugging Face }} |
+| ”isarth/chatgpt-news-articles” | HuggingFace | HuggingFace | FALSE ||
+| ”NicolaiSivesind/ChatGPT-Research-Abstracts” | HuggingFace | HuggingFace | FALSE |@misc {sivesind_2023,author= { {Nicolai Thorer Sivesind}},title= { ChatGPT-Generated-Abstracts },year=2023,publisher= { Hugging Face }}|
 
-The data used to support the findings of this study have been deposited in the current repository. The data were created by the authors and are available under a Creative Commons Non-commercial license. For each data source, we provide three types of edit ratios: 0.05, 0.1, and 0.15. You can find a parser and an explanation of how to read the data yourself in `data/articles/parse_article.py`.
+The data used to support the findings of this study have been deposited in the current repository. The data were created by the authors and are available under a Creative Commons Non-commercial license. For each data source, we provide three types of edit ratios: 0.05, 0.1, and 0.15. You can find a parser and an explanation of how to read the data yourself in `data/articles/parse_article.py`. Additionally, we used three publicly available Huggingface to conduct our power analysis.
 
 ## Computational requirements
 
@@ -97,8 +100,9 @@ The code was last run on a **Windows 10 laptop with an Intel Core i7-8550U CPU @
 - Programs in `src` are the util functions and classes for our method.
 - Program `simulate_replication_HC.py` will simulate the results for HC and minP over the provided dataset.
 - Program `simulate_replication_LoR.py` will simulate the results for Logistic regression over the provided dataset.
+- Program `simulate_replication_HC_power_analysis.py` will simulate the results for the power analysis over Huggingface data.
 - `simulate_replication_conf.yml` a configuration file.
-- Zip file `cache_files/cache_files.zip` contain the cache files for faster simulation, pls unzip it before using it.
+- Zip file `cache_files/cache_files.zip` contains the cache files for faster simulation, pls unzip it before using it.
 
 ## Instructions to Replicators
 
@@ -106,11 +110,13 @@ The code was last run on a **Windows 10 laptop with an Intel Core i7-8550U CPU @
 - Unzip the `cache_files/cache_files.zip` to use cache and make the simulation faster.
 - Run `simulate_replication_HC.py` to simulate the results for HC and minP over the provided dataset.
 - Run `simulate_replication_LoR.py` to simulate the results for Logistic regression over the provided dataset.
+- Run `simulate_replication_HC_power_analysis.py` to simulate the results for the power analysis over Huggingface data.
 
 ### Details
 
 - `simulate_replication_HC.py` will create a csv file to the desired destination containing the results
 - `simulate_replication_LoR.py` will create a csv file to the desired destination containing the results
+- `simulate_replication_HC_power_analysis.py` will create a csv file to the desired destination containing the results
 
 ## List of tables and programs
 
@@ -120,10 +126,26 @@ The provided code reproduces:
 - [ ] All tables and figures in the paper
 - [x] Selected tables and figures in the paper, as explained and justified below.
 
-| Figure/Table #    | Program                     | Line Number | Output file     |
-|-------------------|-----------------------------|-------------|-----------------|
-| Figure 7          | simulate_replication_HC.py  |             | results.csv     |
-| Figure 8          | simulate_replication_HC.py  |             | results.csv     |
-| Figure 8          | simulate_replication_LoR.py |             | results_LoR.csv |
+| Figure/Table #    | Program                                   | Line Number | Output file                |
+|-------------------|-------------------------------------------|-------------|----------------------------|
+| Figure 6          | simulate_replication_HC_power_analysis.py |             | results_power_analysis.csv |
+| Figure 7          | simulate_replication_HC.py                |             | results.csv                |
+| Figure 8          | simulate_replication_HC.py                |             | results.csv                |
+| Figure 8          | simulate_replication_LoR.py               |             | results_LoR.csv            |
 
-
+## Citation Information
+```
+@article{Kashtan2024Information,
+  author = {Kashtan, Idan and Kipnis, Alon},
+  journal = {Harvard Data Science Review},
+  number = {Special Issue 5},
+  year = {2024},
+  month = {aug 15},
+  note = {https://hdsr.mitpress.mit.edu/pub/f90vid3h},
+  publisher = {The MIT Press},
+  title = {
+    {An} {Information}-{Theoretic}
+    {Approach} for {Detecting} {Edits} in {AI}-{Generated} {Text} },
+  volume = { },
+}
+```
