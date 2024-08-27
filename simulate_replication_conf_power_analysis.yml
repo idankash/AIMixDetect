@@ -1,0 +1,31 @@
+# Language model name
+# language-model-name: "gpt2-xl"
+language-model-name: "microsoft/phi-2"
+
+ignore-first-sentence: true
+number-of-interpolation-points: 43
+
+# Min/Max token to consider
+min-tokens-per-sentence: 10
+max-tokens-per-sentence: 50
+
+# HC parameters
+hc-type: "not stbl"
+gamma: 0.15
+
+k-folds: 10      # Number of folds
+window_size: 1   # Determine the window size, make it easy to adjust the train/test ratio. Example 2 => 80-20 when k-fold=10
+train-split: 0.8 # Split the train set into 80/20 (Example train-split=0.8). Using the 0.2 for calibration 
+
+edit-ratios: [0.1, 0.2]
+number-sentences: [50, 100, 200]
+topics: ['AbstractDataset', 'NewsDataset', 'WikiDataset']
+
+# Path to the folder containing all the topics folders
+files-path: "./data/articles"
+
+# Output path for the results
+output-path: ""
+
+# If using cache, the path for the json cache file
+sentences-logloss: "./cache_files/model_phi2_sentences_logloss_power_analysis.json"
