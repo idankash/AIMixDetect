@@ -30,7 +30,7 @@ The analysis conducted in the paper is based on the construction of specific ana
 ### Details on each Data Source
 
 | Data.Name  | Data.Files | Location |
-| -- | -- | -- | -- | -- | 
+| -- | -- | -- | 
 | “Geographical landmarks articles” | [AIMixDetect](https://huggingface.co/datasets/Kashtan/AIMixDetect) | Hugging Face |
 | “Historical figures articles” | [AIMixDetect](https://huggingface.co/datasets/Kashtan/AIMixDetect) | Hugging Face |
 | “Nature articles” | [AIMixDetect](https://huggingface.co/datasets/Kashtan/AIMixDetect) | Hugging Face |
