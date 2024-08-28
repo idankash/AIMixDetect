@@ -29,18 +29,18 @@ The analysis conducted in the paper is based on the construction of specific ana
 
 ### Details on each Data Source
 
-| Data.Name  | Data.Files | Location | Provided | Citation |
+| Data.Name  | Data.Files | Location |
 | -- | -- | -- | -- | -- | 
-| “Geographical landmarks articles” | geographical_landmarks_articles.csv | data/articles | TRUE |  |
-| “Historical figures articles” | historical_figures_articles.csv | data/articles | TRUE |  |
-| “Nature articles” | nature_articles.csv | data/articles | TRUE |  |
-| “Video games articles” | video_games_articles.csv | data/articles | TRUE |  |
-| “Wars articles” | wars_articles.csv | data/articles | TRUE |  |
-| ”aadityaubhat/GPT-wiki-intro” | HuggingFace | HuggingFace | FALSE | @misc {aaditya_bhat_2023,author= { {Aaditya Bhat} },title= { GPT-wiki-intro (Revision 0e458f5) },year= 2023,url= { https://huggingface.co/datasets/aadityaubhat/GPT-wiki-intro },doi= { 10.57967/hf/0326 },publisher= { Hugging Face }} |
-| ”isarth/chatgpt-news-articles” | HuggingFace | HuggingFace | FALSE ||
-| ”NicolaiSivesind/ChatGPT-Research-Abstracts” | HuggingFace | HuggingFace | FALSE |@misc {sivesind_2023,author= { {Nicolai Thorer Sivesind}},title= { ChatGPT-Generated-Abstracts },year=2023,publisher= { Hugging Face }}|
+| “Geographical landmarks articles” | [AIMixDetect](https://huggingface.co/datasets/Kashtan/AIMixDetect) | Hugging Face |
+| “Historical figures articles” | [AIMixDetect](https://huggingface.co/datasets/Kashtan/AIMixDetect) | Hugging Face |
+| “Nature articles” | [AIMixDetect](https://huggingface.co/datasets/Kashtan/AIMixDetect) | Hugging Face |
+| “Video games articles” | [AIMixDetect](https://huggingface.co/datasets/Kashtan/AIMixDetect) | Hugging Face |
+| “Wars articles” | [AIMixDetect](https://huggingface.co/datasets/Kashtan/AIMixDetect) | Hugging Face |
+| “Abstract Dataset” | [AIMixDetectPublicData](https://huggingface.co/datasets/Kashtan/AIMixDetectPublicData) | Hugging Face |
+| “News Dataset” | [AIMixDetectPublicData](https://huggingface.co/datasets/Kashtan/AIMixDetectPublicData) | Hugging Face |
+| “Wiki Dataset” | [AIMixDetectPublicData](https://huggingface.co/datasets/Kashtan/AIMixDetectPublicData) | Hugging Face |
 
-The data used to support the findings of this study have been deposited in the current repository. The data were created by the authors and are available under a Creative Commons Non-commercial license. For each data source, we provide three types of edit ratios: 0.05, 0.1, and 0.15. You can find a parser and an explanation of how to read the data yourself in `data/articles/parse_article.py`. Additionally, we used three publicly available Huggingface datasets to conduct our power analysis.
+The data used to support the findings of this study have been deposited in HuggingFace. The authors created the data which are available under a Creative Commons Non-commercial license. For each data source, we provide three types of edit ratios: 0.05, 0.1, and 0.15. You can find a parser and an explanation of how to read the data yourself in the provided link. Additionally, we used three publicly available Huggingface datasets to conduct our power analysis.
 
 ## Computational requirements
 
@@ -82,8 +82,8 @@ Approximate time needed to reproduce the analyses on a standard 2024 desktop mac
 
 Approximate storage space needed:
 
-- [x] < 25 MBytes
-- [ ] 25 MB - 250 MB
+- [ ] < 25 MBytes
+- [x] 25 MB - 250 MB
 - [ ] 250 MB - 2 GB
 - [ ] 2 GB - 25 GB
 - [ ] 25 GB - 250 GB
