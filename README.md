@@ -8,9 +8,12 @@ contributors:
 
 ## Overview
 
-This replication package is designed to guide you through the process of replicating the results presented in our paper. The data used in this research was generated using GPT-3.5-turbo (ChatGPT) and is organized into five distinct datasets, which are located in the `dataset` folder. To facilitate the reading and parsing of these datasets, a script named `parse_article.py` is provided.
+This replication package is designed to guide you through the process of replicating the results presented in the paper:
+- Kashtan, I., & Kipnis, A. (2024). "An Information-Theoretic  Approach for Detecting Edits in AI-Generated Text." Harvard Data Science Review, (Special Issue 5).
 
-The analysis conducted in the paper is based on the construction of specific analysis files for three statistical methods: HC, minP, and LoR. The code included in this package allows you to replicate these analyses. Specifically, three main scripts—`simulate_replication_HC.py`, `simulate_replication_LoR.py`, and `simulate_replication_HC_power_analysis.py`—are used to run the core analyses discussed in the paper.
+This paper uses a new dataset generated using GPT-3.5-turbo (ChatGPT) and is organized into five distinct datasets, which are located in the `dataset` folder and HuggingFace dataset. To facilitate the reading and parsing of these datasets, a script named `parse_article.py` is provided.
+
+The analysis conducted in the paper is based on the construction of specific analysis files for three statistical methods: Higher Criticism (HC) of logperpelxity P-values, the minimal P-value (minP) of such P-values, and a logistic regression (LoR) classifier applied to the embedding of full articles. The code included in this package allows you to replicate the results in the paper. Specifically, three main scripts—`simulate_replication_HC.py`, `simulate_replication_LoR.py`, and `simulate_replication_HC_power_analysis.py`—are used to run the core analyses discussed in the paper.
 
 ## Data Availability and Provenance Statements
 
