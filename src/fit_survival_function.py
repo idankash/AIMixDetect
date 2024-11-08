@@ -75,20 +75,3 @@ def fit_per_length_survival_function(lengths, xx, G=501, log_space=True):
         return func2d
     else:
         return func
-    
-
-# import pickle
-# import pandas as pd
-# df = pd.read_csv('D:\\.Idan\\תואר שני\\תזה\\detectLM\\article_null.csv')
-# LOGLOSS_PVAL_FUNC_FILE = 'D:\.Idan\תואר שני\תזה\detectLM\example\logloss_pval_function.pkl'
-# LOGLOSS_PVAL_FUNC_FILE_TEST = 'D:\.Idan\תואר שני\תזה\detectLM\example\logloss_pval_function_test.pkl'
-# with open(LOGLOSS_PVAL_FUNC_FILE, 'wb') as handle:
-#     pickle.dump(fit_per_length_survival_function(df['length'].values, df['response'].values), handle, protocol=pickle.HIGHEST_PROTOCOL)
-
-# with open(LOGLOSS_PVAL_FUNC_FILE, 'rb') as f:
-#     data = pickle.load(f)
-#     print(data)
-
-# with open(LOGLOSS_PVAL_FUNC_FILE_TEST, 'rb') as f:
-#     data = pickle.load(f)
-#     print(data)
